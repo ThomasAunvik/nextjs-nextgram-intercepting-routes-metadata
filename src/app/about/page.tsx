@@ -1,3 +1,4 @@
-export default function Home() {
-  return <h1>About</h1>;
+export default async function Home() {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  return <h1>ABOUT</h1>;
 }
