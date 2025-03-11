@@ -1,24 +1,25 @@
 import { Metadata } from "next";
 import Frame from "../../../components/frame/Frame";
-import swagPhotos, { Photo } from "../../../photos";
+import photos, { Photo } from "../../../photos";
 
 export const generateMetadata = async ({
-  params: { id },
+  params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }): Promise<Metadata> => {
-  const title = `Photo # ${id}`;
+  const title = `Photo # ${(await params).id}`;
   return {
     title,
   };
 };
 
-export default function PhotoPage({
-  params: { id },
+export default async function PhotoPage({
+  params: promiseParams,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const photo: Photo = swagPhotos.find((p) => p.id === id)!;
+  const params = await promiseParams;
+  const photo: Photo = photos.find((p) => p.id === params.id)!;
 
   return (
     <div className="container mx-auto my-10">

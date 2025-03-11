@@ -4,23 +4,24 @@ import Modal from "../../../../components/modal/Modal";
 import swagPhotos, { Photo } from "../../../../photos";
 
 export const generateMetadata = async ({
-  params: { id },
+  params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }): Promise<Metadata> => {
-  const title = `Intercepted Photo # ${id}`;
+  const title = `Intercepted Photo # ${(await params).id}`;
   return {
     title,
   };
 };
 
-export default function PhotoModal({
-  params: { id: photoId },
+export default async function PhotoModal({
+  params: promiseParams,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
+  const params = await promiseParams;
   const photos = swagPhotos;
-  const photo: Photo = photos.find((p) => p.id === photoId)!;
+  const photo: Photo = photos.find((p) => p.id === params.id)!;
 
   return (
     <Modal>
